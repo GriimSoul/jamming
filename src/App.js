@@ -26,11 +26,20 @@ function App() {
   };
 
   function addToP(song) {
-    setPTracks('')
+    if (pTracks.some((tune) => tune.id === song.id)) {
+      return
+    }
+    else {
+    setPTracks((prev) => [...prev, song]);
+  }
   };
 
   function removeFromP(song) {
-
+    setPTracks((prev) => {
+      prev.filter((tune) => {
+        tune.id === song.id;
+      })
+    })
   };
 
   function changePName({target}) {
@@ -38,7 +47,10 @@ function App() {
   };
 
   function savePlaylist() {
-
+    let trackUris = [];
+    for (const  track of pTracks) {
+      trackUris.push(track.uri);
+    }
   };
 
   return (
