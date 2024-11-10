@@ -18,6 +18,7 @@ function App() {
   const [pName, setPName] = useState('');
   const [pTracks, setPTracks] = useState([]);
   const [input, setInput] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const loc = useLocation();
   const toMakeitSimple = loc.search;
@@ -65,11 +66,18 @@ function App() {
     setPName(target.value);
   };
 
+  function checkPrivacy() {
+    setIsPrivate(!isPrivate);
+  }
+
   function savePlaylist() {
-    let trackUris = [];
-    for (const  track of pTracks) {
-      trackUris.push(track.uri);
-    }
+    exchangeCodeForToken();
+    const momentaryToken = getAccessToken();
+
+    savePlaylist(isPrivate, pName, pTracks, momentaryToken);
+
+    setPTracks([]);
+    
   };
 
   return (
@@ -93,7 +101,9 @@ function App() {
         pTracks={pTracks} 
         removeFromP={removeFromP} 
         changePName={changePName} 
-        savePlaylist={savePlaylist}/>
+        savePlaylist={savePlaylist}
+        checkPrivacy={checkPrivacy}
+        pubPriv={isPrivate}/>
 
     </div>
   );

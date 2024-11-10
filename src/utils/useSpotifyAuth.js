@@ -104,4 +104,68 @@ export const searchSpotify = async (input, token) => {
     return [];
   }
 };
+
+export async function savePlaylist(isPrivate, playName, playTracks, token) {
+  if (!playTracks || playTracks.length === 0) {
+    console.error("No tracks in the playlist.");
+    return;
+  }
+  try {
+    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const userData = await userResponse.json();
+    const userId = userData.id;
+    if (!userId) {
+      throw new Error("Failed to retrieve user ID");
+    }
+
+    const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: playName,
+        public: !isPrivate,  // If isPrivate is true, set public to false
+      })
+    });
+
+    const playlistData = await createPlaylistResponse.json();
+    const playlistId = playlistData.id;
+    if (!playlistId) {
+      throw new Error("Failed to create playlist");
+    }
+
+    const trackUris = playTracks.map(track => track.uri);  // Get URIs of the tracks
+
+    // since Spotify's API limits to 100 tracks per request; I'll need to batch if there are more
+    for (let i = 0; i < trackUris.length; i += 100) {
+      const urisChunk = trackUris.slice(i, i + 100);
+
+      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          uris: urisChunk
+        })
+      });
+    }
+
+    console.log(`Playlist "${playName}" created successfully with ${trackUris.length} tracks.`);
+  } catch (error) {
+    console.error("Error creating playlist:", error);
+  }
+}  
+
+
+
  

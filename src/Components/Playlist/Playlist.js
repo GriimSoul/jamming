@@ -14,6 +14,15 @@ function Playlist(props) {
                     placeholder="My cool playlist" 
                     value={props.pName} 
                     onChange={props.changePName}/>
+                    <label for="isPrivate">
+                        Privacy: {props.pubPriv ? "Private" : "Public"}
+                    </label>
+                <input
+                    type="checkbox"
+                    name="isPrivate"
+                    id="isPrivate"
+                    onChange={props.checkPrivacy}
+                    />
 
                 <div className="playlistTracks">
                 { props.pTracks.map((track) => {
