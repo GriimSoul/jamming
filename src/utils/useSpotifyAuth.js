@@ -38,6 +38,7 @@ export const spotifyCallback = (locHook) => {
     const params = new URLSearchParams(location.search);
     code = params.get('code');
     console.log(`the code is${code}`);
+    localStorage.setItem('access_code', code);
     return code;
 
   }                                      

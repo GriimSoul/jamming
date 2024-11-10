@@ -8,15 +8,16 @@ function Tracklist(props) {
 
     return (
         <section className="trackList">
-            {props.tracks.map( (track) => {
-                return (<Track 
-                track={track}
-                id={track.id}
-                addRemove={props.addToP}
-                plusOrMinus="+"
-                /> )
-                }
-            )}
+            {console.log(props.tracks)}
+            {props.tracks?.map((track) => (
+        <Track 
+          key={track.id} 
+          track={track}
+          id={track.id}
+          addRemove={props.addToP}
+          plusOrMinus="+" 
+        />
+      ))}
         </section>
     );
 }

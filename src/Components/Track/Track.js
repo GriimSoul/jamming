@@ -12,10 +12,22 @@ function addORRemove() {
 
     return(
         <article className="sTrack">
-        <img src="image source" alt="{title} image"/>
-        <h3 className="songTitle">Title</h3>
-        <h3 className="artistName">by: Artist</h3>
-        <h3 className="albumName">Album</h3>
+        <img src={props.track.album.images[1].url} alt={props.track.name + " cover image"}/>
+        <h3 className="songTitle">
+            <a href={props.track.external_urls.spotify} target="_blank">
+                {props.track.name}
+            </a>
+        </h3>
+        <h3 className="artistName">
+            <a href={props.track.artists[0].external_urls.spotify} target="_blank">
+                {props.track.artists[0].name}
+            </a>
+        </h3>
+        <h3 className="albumName">
+            <a href={props.track.album.external_urls.spotify} target="_blank">
+                {props.track.album.name}
+            </a>
+        </h3>
 
         <button className="addRemove" onClick={addORRemove}>{props.plusOrMinus}</button>
         <hr/>

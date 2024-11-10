@@ -21,7 +21,7 @@ function Playlist(props) {
                             <Track
                             key={track.id}
                             track={track}
-                            addRemove={props.removefromP}
+                            addRemove={props.removeFromP}
                             plusOrMinus="-"/>
                         )
                     })

@@ -26,7 +26,7 @@ function App() {
     if (!code) {
     spotifyCallback(loc);
   }
-  },[toMakeitSimple])
+  },[toMakeitSimple]);
 
 
   function handleChange({target}) {
@@ -37,7 +37,12 @@ function App() {
     e.preventDefault();
     exchangeCodeForToken();
     const momentaryToken = getAccessToken();
-    setResults(() => searchSpotify(momentaryToken, input));
+    const fetchResults = async () => {
+      const results = await searchSpotify(input, momentaryToken);
+      setResults(results); 
+    };
+  
+    fetchResults();
   };
 
   function addToP(song) {
@@ -50,12 +55,11 @@ function App() {
   };
 
   function removeFromP(song) {
-    setPTracks((prev) => {
-      prev.filter((tune) => {
-        return tune.id === song.id;
-      })
-    })
+    setPTracks((prev) => 
+      prev.filter((tune) => tune.id !== song.id)
+    );
   };
+  
 
   function changePName({target}) {
     setPName(target.value);
@@ -70,20 +74,27 @@ function App() {
 
   return (
     <div className="App">
+
       <Login 
       getSpotifyLoginUrl={getSpotifyLoginUrl}
       code={code}/>
+
       <SearchBar 
         searchResults={searchResults} 
         input={input} 
         handleChange={handleChange}/>
-      <SearchResults results={results} addToP={addToP}/>
+
+      <SearchResults 
+      results={results} 
+      addToP={addToP}/>
+
       <Playlist 
         pName={pName} 
         pTracks={pTracks} 
         removeFromP={removeFromP} 
         changePName={changePName} 
         savePlaylist={savePlaylist}/>
+
     </div>
   );
 }
