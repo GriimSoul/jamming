@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import spotifyLogo from './spotifyLogo.png'
 
 const code = localStorage.getItem('access_code');
 
@@ -21,11 +22,17 @@ const LoginButton = (props) => {
     window.location.href = props.getSpotifyLoginUrl();
   };
 
+  const spotifyButton = {
+    width: '70px',
+    height: '70px',
+  }
+
   return (
   <button 
   onClick={handleLogin}>
     <img 
-    src="spotify logo.png"
+        src={spotifyLogo}
+        style={spotifyButton}
     alt="spotify logo"/>
     {logged ? "" : "Log in to use"}
     </button>);
