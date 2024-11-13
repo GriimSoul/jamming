@@ -8,7 +8,7 @@ import SearchBar from './Components/Search Bar/SearchBar';
 import Playlist from './Components/Playlist/Playlist';
 import SearchResults from './Components/Search Results/SearchResults';
 import Login from "./Components/Login/Login"
-import {spotifyCallback, getAccessToken, searchSpotify, getSpotifyLoginUrl, code, exchangeCodeForToken} from './utils/useSpotifyAuth';
+import {spotifyCallback, getAccessToken, searchSpotify, getSpotifyLoginUrl, code, exchangeCodeForToken, handleSavePlaylist} from './utils/useSpotifyAuth';
 
 
 
@@ -27,7 +27,7 @@ function App() {
     if (!code) {
     spotifyCallback(loc);
   }
-  },[toMakeitSimple]);
+  },[]);
 
 
   function handleChange({target}) {
@@ -70,13 +70,12 @@ function App() {
     setIsPrivate(!isPrivate);
   }
 
-  function savePlaylist() {
-    exchangeCodeForToken();
-    const momentaryToken = getAccessToken();
-
-    savePlaylist(isPrivate, pName, pTracks, momentaryToken);
+  async function savePlaylist(e) {
+    e.preventDefault()
+    await handleSavePlaylist(isPrivate, pName, pTracks);
 
     setPTracks([]);
+    setPName("");
     
   };
 

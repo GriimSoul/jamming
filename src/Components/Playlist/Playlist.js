@@ -14,7 +14,7 @@ function Playlist(props) {
                     placeholder="My cool playlist" 
                     value={props.pName} 
                     onChange={props.changePName}/>
-                    <label for="isPrivate">
+                    <label htmlFor="isPrivate">
                         Privacy: {props.pubPriv ? "Private" : "Public"}
                     </label>
                 <input

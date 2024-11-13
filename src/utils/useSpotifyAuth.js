@@ -65,7 +65,8 @@ export const spotifyCallback = (locHook) => {
           if (response.ok) {
             const data = await response.json();
             localStorage.setItem('spotify_access_token', data.access_token);
-            return data;
+            localStorage.setItem('spotify_refresh_token', data.refresh_token);
+            return data.access_token;
           } else {
             console.error('Failed to exchange authorization code for access token');
           }
@@ -105,18 +106,34 @@ export const searchSpotify = async (input, token) => {
   }
 };
 
+// Helper function to set a timeout for fetch requests
+async function fetchWithTimeout(url, options, timeout = 5000) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
+}
+
 export async function savePlaylist(isPrivate, playName, playTracks, token) {
   if (!playTracks || playTracks.length === 0) {
     console.error("No tracks in the playlist.");
     return;
   }
+
   try {
-    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+    console.log("Step 1: Fetching user ID...");
+    const userResponse = await fetchWithTimeout('https://api.spotify.com/v1/me', {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
+
+    if (!userResponse.ok) {
+      throw new Error("Failed to fetch user data");
+    }
 
     const userData = await userResponse.json();
     const userId = userData.id;
@@ -124,7 +141,10 @@ export async function savePlaylist(isPrivate, playName, playTracks, token) {
       throw new Error("Failed to retrieve user ID");
     }
 
-    const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+    console.log("User ID retrieved:", userId);
+
+    console.log("Step 2: Creating playlist...");
+    const createPlaylistResponse = await fetchWithTimeout(`https://api.spotify.com/v1/users/${userId}/playlists`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -136,19 +156,27 @@ export async function savePlaylist(isPrivate, playName, playTracks, token) {
       })
     });
 
-    const playlistData = await createPlaylistResponse.json();
-    const playlistId = playlistData.id;
-    if (!playlistId) {
+    if (!createPlaylistResponse.ok) {
       throw new Error("Failed to create playlist");
     }
 
-    const trackUris = playTracks.map(track => track.uri);  // Get URIs of the tracks
+    const playlistData = await createPlaylistResponse.json();
+    const playlistId = playlistData.id;
+    if (!playlistId) {
+      throw new Error("Playlist creation failed, no playlist ID returned.");
+    }
 
-    // since Spotify's API limits to 100 tracks per request; I'll need to batch if there are more
-    for (let i = 0; i < trackUris.length; i += 100) {
-      const urisChunk = trackUris.slice(i, i + 100);
+    console.log("Playlist created with ID:", playlistId);
 
-      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    console.log("Step 3: Adding tracks to the playlist in batches...");
+    const trackUris = playTracks.map(track => track.uri);
+    const maxBatchSize = 100; // Spotify's max track limit per request
+
+    // Loop through batches of URIs and add them
+    for (let i = 0; i < trackUris.length; i += maxBatchSize) {
+      const urisChunk = trackUris.slice(i, i + maxBatchSize);
+
+      const addTracksResponse = await fetchWithTimeout(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -158,14 +186,64 @@ export async function savePlaylist(isPrivate, playName, playTracks, token) {
           uris: urisChunk
         })
       });
+
+      if (!addTracksResponse.ok) {
+        throw new Error("Failed to add tracks to playlist");
+      }
+
+      console.log(`Added ${urisChunk.length} tracks to playlist.`);
     }
 
     console.log(`Playlist "${playName}" created successfully with ${trackUris.length} tracks.`);
+
   } catch (error) {
-    console.error("Error creating playlist:", error);
+    console.error("Error during playlist creation process:", error);
   }
-}  
+}
 
 
+export const refreshAccessToken = async () => {
+  const basicAuth = btoa(`${clientID}:${clientSecret}`); // Base64 encoding of clientId:clientSecret
 
- 
+  const actualToken = localStorage.getItem('spotify_refresh_token');
+
+  const body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: actualToken, // Use the stored refresh token
+  });
+
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${basicAuth}`, // Base64-encoded client_id:client_secret
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: body.toString(),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const newAccessToken = data.access_token;
+      localStorage.setItem('spotify_access_token', newAccessToken); // Store the new access token
+      return newAccessToken; // Return the new access token
+    } else {
+      console.error('Failed to refresh access token');
+    }
+  } catch (error) {
+    console.error('Error refreshing access token:', error);
+  }
+};
+
+
+export const handleSavePlaylist = async (isPrivate, playName, playTracks) => {
+  try {
+    // Refresh the access token before saving the playlist
+    const newAccessToken = await refreshAccessToken();
+    
+    // Now call savePlaylist with the new access token
+    await savePlaylist(isPrivate, playName, playTracks, newAccessToken);
+  } catch (error) {
+    console.error("Error while saving the playlist:", error);
+  }
+};
