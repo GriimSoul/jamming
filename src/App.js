@@ -22,7 +22,13 @@ function App() {
 
   const loc = useLocation();
   const toMakeitSimple = loc.search;
-
+  const myStyles = {
+    display:"flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    margin: "1.7%",
+    overflowX: "hidden"
+};
   useEffect(() => {
     if (!code) {
     spotifyCallback(loc);
@@ -34,9 +40,9 @@ function App() {
     setInput(target.value);
 }
 
-  function searchResults(e) {
+  async function searchResults(e) {
     e.preventDefault();
-    exchangeCodeForToken();
+    await exchangeCodeForToken();
     const momentaryToken = getAccessToken();
     const fetchResults = async () => {
       const results = await searchSpotify(input, momentaryToken);
@@ -91,18 +97,19 @@ function App() {
         input={input} 
         handleChange={handleChange}/>
 
-      <SearchResults 
-      results={results} 
-      addToP={addToP}/>
-
-      <Playlist 
-        pName={pName} 
-        pTracks={pTracks} 
-        removeFromP={removeFromP} 
-        changePName={changePName} 
-        savePlaylist={savePlaylist}
-        checkPrivacy={checkPrivacy}
-        pubPriv={isPrivate}/>
+      <section style={myStyles}>
+        <SearchResults
+        results={results}
+        addToP={addToP}/>
+        <Playlist
+          pName={pName}
+          pTracks={pTracks}
+          removeFromP={removeFromP}
+          changePName={changePName}
+          savePlaylist={savePlaylist}
+          checkPrivacy={checkPrivacy}
+          pubPriv={isPrivate}/>
+      </section>
 
     </div>
   );

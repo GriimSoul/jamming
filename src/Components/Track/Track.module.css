@@ -1,0 +1,86 @@
+@font-face {
+    font-family: Small;
+    src: url("../../fonts/small.ttf");
+}
+@font-face {
+    font-family: Big;
+    src: url("../../fonts/big.ttf");
+}
+
+.sTrack h3 {
+    margin: 0;
+}
+
+.sTrack {
+    width: 70%;
+    margin-left: 4%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    border-width: 0.3vw;
+    border-style: solid;
+    border-color:#884cd5;
+    box-shadow: 2px 2px 15px violet;
+    margin-bottom:4px;
+}
+
+.sTrackImage {
+    width: 15%;
+    border-radius: 12%;
+    box-shadow: 2px 2px 20px #fff;
+}
+
+.orderWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%; 
+    justify-content: space-between; 
+    padding-right: 19vw; 
+    box-sizing: border-box; 
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 28vw;
+    color: cornsilk;
+    align-items: flex-start;
+    margin-left: 2%;
+}
+
+.songTitle {
+    font-family: Big;
+    color: cornsilk;
+    text-decoration: none;
+    font-size: clamp(14px, 1.6vw, 65px);
+}
+
+.artistName {
+    font-family: Small;
+    color: bisque;
+    text-decoration: none;
+    font-size: clamp(12px, 1.4vw, 62px);
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.albumName {
+    font-family: Small;
+    color: ghostwhite;
+    text-decoration: none;
+    font-size: clamp(10px, 1.2vw, 59px);
+}
+
+.addRemove {
+    background-color: #202683;
+    border-radius: 50%;
+    color: white;
+    height: fit-content;
+    width: fit-content;
+    font-size: 3vw;
+    margin-left: auto;
+    box-sizing: border-box;
+}

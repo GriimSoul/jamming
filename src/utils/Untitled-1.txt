@@ -260,3 +260,5 @@
     "type": "track",
     "uri": "spotify:track:47rOmlKHPYyMDM3h6L74Sn"
 }
+
+add button that alternates between results and playlist, by hiding and showing them using the display thingy. (the button's existence is determined by a media query)

@@ -1,0 +1,111 @@
+@font-face {
+    font-family: Big;
+    src: url("../../fonts/big.ttf");
+}
+@font-face {
+    font-family: Small;
+    src: url("../../fonts/small.ttf");
+}
+
+
+.playlist {
+    background-color: #128bb1b0;
+    width:45%;
+    border-radius: 3%;
+    box-shadow: -7px 5px 25px #2baf67;
+    margin-top:2%;
+}
+.playlistHeader {
+    display:flex;
+    flex-direction: column;
+    margin: 3% 0;
+}
+.playlistPrivacy {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.privacyCollection {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right:2%;
+    margin-top:3%;
+}
+.playlistName {
+    font-family: Big;
+    margin: 0 auto;
+    background-color: transparent !important;
+    color:whitesmoke !important;
+    border:none !important;
+    font-size: clamp(9px, 2.4vw, 73px);
+    text-align: center;
+
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 6vw;
+  height: 3vw;
+}
+.toggleButton {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.sliderRound {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #8a2241;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 32%;
+}
+.sliderRound::before {
+  position: absolute;
+  content: "";
+  height: 2.2vw;
+  width: 2.2vw;
+  left: 3%;
+  bottom: 15%;
+  background-color: #ffca00;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+.toggleButton:checked + .sliderRound {
+    background-color: #073357;
+}
+.toggleButton:focus + .sliderRound {
+    box-shadow: 2px 2px 3px #45196e;
+}
+.toggleButton:checked + .sliderRound::before {
+    -webkit-transform: translateX(3.2vw);
+    -ms-transform: translateX(3.2vw);
+    transform: translateX(3.2vw);
+  }
+
+.toggleLabel {
+    font-family: Small;
+    font-size:clamp(7px, 1.5vw, 63px);
+    color:whitesmoke;
+    margin-right:3%;
+}
+.playlistTracks {
+    background-color: #6b059b77;
+}
+.savePlaylist {
+    margin: 4% 0;
+    font-family: Big;
+    padding:4%;
+    background-color: #7f03bbcf;
+    color:ghostwhite;
+    border-radius: 52%;
+    font-size: clamp(14px, 1.6vw, 65px);
+    border:none;
+    box-shadow: 3px 3px 15px #ff1faec4;
+}

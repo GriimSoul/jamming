@@ -1,0 +1,11 @@
+@font-face {
+    font-family: Big;
+    src: url("../../fonts/big.ttf");
+}
+
+.trackList {
+    font-family: Big;
+    color:whitesmoke;
+    background-color: #6b059b77;
+    width:57%;
+}

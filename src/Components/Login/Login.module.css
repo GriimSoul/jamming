@@ -1,0 +1,35 @@
+@font-face {
+    font-family: "BigFont";
+    src: url("../../fonts/big.ttf");
+}
+
+.spotifyImage {
+    height:100%;
+}
+.headerBar {
+    width: 100%;
+    height: clamp(9vh, 12vh, 15vh);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgb(91 133 187 / 59%);
+    border-radius: 0 0 50px 50px;
+    box-shadow: -1px 10px 35px #ac6bff;
+}
+.spotifyButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    height: 100%;
+    font-family: BigFont;
+    color:ghostwhite;
+    text-shadow: 4px 3px 2px #fa73bdb2;
+    font-size: clamp(25px, 4vw, 72px);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    position:relative;
+}
+.logIN {
+  margin-left:3px;  
+} 

@@ -1,13 +1,13 @@
 import React from "react";
-
 import Track from '../Track/Track';
+import styles from './Tracklist.module.css';
 
 function Tracklist(props) {
 
 
 
     return (
-        <section className="trackList">
+        <section className={styles.trackList}>
             {console.log(props.tracks)}
             {props.tracks?.map((track) => (
         <Track 

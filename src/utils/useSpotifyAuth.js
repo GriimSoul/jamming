@@ -72,6 +72,7 @@ export const spotifyCallback = (locHook) => {
           }
         } catch (error) {
           console.error('Error exchanging code for token:', error);
+          refreshAccessToken();
         }
       };
 
@@ -246,4 +247,18 @@ export const handleSavePlaylist = async (isPrivate, playName, playTracks) => {
   } catch (error) {
     console.error("Error while saving the playlist:", error);
   }
+};
+
+export const isAccessTokenValid = async () => {
+  const token = getAccessToken();
+  if (!token) return false;
+
+  // Make a simple request to verify the token
+  const response = await fetch('https://api.spotify.com/v1/me', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  return response.ok; // Returns true if the token is valid
 };

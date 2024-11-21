@@ -1,0 +1,17 @@
+@font-face {
+    font-family: Big;
+    src: url("../../fonts/big.ttf");
+}
+
+.results {
+    font-family: Big;
+    color:ghostwhite;
+    background-color: #67266bd6;
+    border-radius: 3%;
+    text-align: left;
+    margin-top: 2%;
+}
+.results h2 {
+    margin-left: 4%;
+    font-size: clamp(12px, 2.4vw, 73px);
+}
