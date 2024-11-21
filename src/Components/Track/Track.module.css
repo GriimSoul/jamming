@@ -12,13 +12,10 @@
 }
 
 .sTrack {
-    width: 70%;
-    margin-left: 4%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    width: 100%;
     border-width: 0.3vw;
     border-style: solid;
     border-color:#884cd5;
@@ -38,7 +35,7 @@
     align-items: center;
     width: 100%; 
     justify-content: space-between; 
-    padding-right: 19vw; 
+    padding-right: 1vw; 
     box-sizing: border-box; 
 }
 
@@ -76,11 +73,11 @@
 
 .addRemove {
     background-color: #202683;
-    border-radius: 50%;
+    border-radius: 100%;
     color: white;
-    height: fit-content;
-    width: fit-content;
+    height: 4vw;
+    width: 4vw;
     font-size: 3vw;
-    margin-left: auto;
+    padding:0;
     box-sizing: border-box;
 }

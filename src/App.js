@@ -25,9 +25,9 @@ function App() {
   const myStyles = {
     display:"flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     margin: "1.7%",
-    overflowX: "hidden"
+    position: "relative",
 };
   useEffect(() => {
     if (!code) {

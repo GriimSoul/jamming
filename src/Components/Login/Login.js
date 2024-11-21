@@ -23,7 +23,7 @@ const LoginButton = (props) => {
     };
 
     checkToken();
-  }, []);
+  }, [localStorage.getItem('spotify_access_token')]);
 
   const handleLogin = () => {
     window.location.href = props.getSpotifyLoginUrl();
