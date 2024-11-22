@@ -2,7 +2,7 @@
 const clientID = "831ce5e002bb40d580592f7f2281d266";
 const clientSecret = "dadaf4a005444351a0ba07c0c8baff33";
 const responseType = "code";
-const  redirectURI = "http://localhost:3000/callback";
+const  redirectURI = "https://griimsoul.github.io/jamming/callback";
 const scope = "playlist-modify-private playlist-modify-public";
 export let code = "";
 
